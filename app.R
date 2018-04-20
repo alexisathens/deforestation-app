@@ -3,18 +3,14 @@ library(tidyverse)
 library(leaflet)
 library(maptools)
 library(Rcpp)
-#old app.R
 source('def_functions.R') #auxiliary R functions
 sourceCpp('rcpp_functions.cpp') #auxiliary C++ functions
-#library(lubridate)
-#library(gridExtra)
 
 coords <- data.frame(city_num=1:2,
                      city_name=c("Manuas","Porto Velho"),
                      city_id=c("manuas","velho"),
                      city_lat=c(-3.117034,-8.7666667),
                      city_long=c(-60.025780,-63.9))
-points <- list()
 
 ui <- fluidPage(
   
@@ -41,17 +37,14 @@ ui <- fluidPage(
         #          choices=c("Vertical road at n=20" = "road1"),
          #         selected="road1"),
       
-      #take clicks here!
-      
       sliderInput("years",
                   label="Years to elapse:",
-                  min=1,max=50,value=30) 
+                  min=1,max=50,value=30), 
       
-      #add comma back!!
       
       #checkboxInput("simulate", "Show simulation", value = TRUE), #show at different time steps
       
-      #helpText("Please click on the map twice."),
+      helpText("Draw a road on the map.")
       
       #actionButton("redraw", "Redraw"),
       
@@ -101,7 +94,7 @@ server <- function(input, output){ #session arg?
   })
   
   output$summary <- renderTable( #renderText(
-    isolate(reactiveValuesToList(click_dat))
+    isolate(reactiveValuesToList(click_dat)) #not working
       
     #c("Points: ")
     
@@ -162,7 +155,7 @@ server <- function(input, output){ #session arg?
     
     
     #construct map
-  #}) 
+  #}) Junk
   #----------
   
 } #end server
