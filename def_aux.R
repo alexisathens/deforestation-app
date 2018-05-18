@@ -53,6 +53,7 @@ midpoint=function(pt1,pt2,pts=data.frame(x=pt1$x,y=pt1$y),thresh=1.0)
   return(pts)
 }
 
+#intermediary function for determining proportion of deforested neighbors
 def_neighbors=function(land) #if already deforested...
 {
   land.m=df_to_matrix(land)
