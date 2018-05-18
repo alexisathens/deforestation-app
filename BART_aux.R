@@ -14,7 +14,7 @@ classify <- function(dat,dec)
 #assign each observation an appropriate terminal node
 assign_term <- function(dat,dec,this.id=1)
 {
-  if(floor(log2(this.id)) > floor(log2(max(dec$node.id)))) { #if beyond dec nodes, assign terminal node
+  if(floor(log2(this.id)) > floor(log2(max(dec$node.id)))) { #if beyond internal nodes, assign terminal node
     leaf.id=this.id-length(dec$node.id)
     return(leaf.id)
   } else if(dat[dec$cov[this.id]] > dec$thresh[this.id]) { #left child
