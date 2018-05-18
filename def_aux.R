@@ -43,7 +43,7 @@ midpoint=function(pt1,pt2,pts=data.frame(x=pt1$x,y=pt1$y),thresh=1.0)
       pts=rbind(pts,data.frame(x=pt2$x,y=pt2$y))
     }
     return(pts)
-  } else { #get midpoint again
+  } else { #get midpoint
     mid.x=(pt1$x+pt2$x)/2
     mid.y=(pt1$y+pt2$y)/2
     mid=data.frame(x=mid.x,y=mid.y)
@@ -54,7 +54,7 @@ midpoint=function(pt1,pt2,pts=data.frame(x=pt1$x,y=pt1$y),thresh=1.0)
 }
 
 #intermediary function for determining proportion of deforested neighbors
-def_neighbors=function(land) #if already deforested...
+def_neighbors=function(land)
 {
   land.m=df_to_matrix(land)
   new.land.m=def_nbors(land.m)
@@ -83,6 +83,6 @@ matrix_to_vec=function(land.m)
   #assuming for now that land df will be constructed the same as by the expand.grid function
   #i.e., the order for the x,y coords will be of the same construction
   land.v <- as.vector(land.m)
-  nbors <- land.v[which(land.v!=-1)]
+  nbors <- land.v[which(land.v!=-1)] #return value for plots that are "on" map only
   return(nbors)
 }
