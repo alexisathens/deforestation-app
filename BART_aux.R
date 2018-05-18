@@ -15,11 +15,11 @@ classify <- function(dat,dec)
 assign_term <- function(dat,dec,this.id=1)
 {
   if(floor(log2(this.id)) > floor(log2(max(dec$node.id)))) { #if beyond dec nodes, assign terminal node
-    leaf.id=this.id-length(dec$node.id) #this.id-7
+    leaf.id=this.id-length(dec$node.id)
     return(leaf.id)
-  } else if(dat[dec$cov[this.id]] > dec$thresh[this.id]) { #move left
+  } else if(dat[dec$cov[this.id]] > dec$thresh[this.id]) { #left child
     assign_term(dat,dec,2*this.id)
-  } else { #move right
+  } else { #right child
     assign_term(dat,dec,2*this.id+1)
   }
 }
