@@ -3,8 +3,8 @@ library(Rcpp)
 rm(list=ls(all=TRUE))
 set.seed(1)
 
-source('def_functions.R') #auxiliary R functions
-sourceCpp('rcpp_functions.cpp') #auxiliary C++ functions
+source('deforestation-app/def_aux.R') #auxiliary R functions
+sourceCpp('deforestation-app/rcpp_functions.cpp') #auxiliary C++ functions
 #source('test_funcs.R') #import test cases here of varying complexity..
 
 #get from UI...
