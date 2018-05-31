@@ -1,11 +1,14 @@
+library(rsconnect)
 library(shiny)
+library(ggplot2)
+#rsconnect::deployApp()
 library(tidyverse)
 library(leaflet)
 library(maptools)
 library(Rcpp)
 library(DT) #output data frames
-source('def_aux.R') #auxiliary R functions
-sourceCpp('rcpp_functions.cpp') #auxiliary C++ functions
+#source('def_aux.R') #auxiliary R functions
+#sourceCpp('rcpp_functions.cpp') #auxiliary C++ functions
 
 coords <- data.frame(city_num=1:2,
                      city_name=c("Manaus","Porto Velho"),
@@ -42,7 +45,15 @@ ui <- fluidPage(
       
       sliderInput("years",
                   label="Years to elapse:",
-                  min=1,max=50,value=30), 
+                  min=1,max=50,value=30),
+      
+      textInput("pt1.lat", label = h5("Point 1 Lat Coords")), #, value = "Lat coords"
+      textInput("pt1.long", label = h5("Point 1 Long Coords")),
+      textInput("pt2.lat", label = h5("Point 2 Lat Coords")),
+      textInput("pt2.long", label = h5("Point 2 Long Coords")),
+      
+      hr(), #horizontal rule (line)
+      fluidRow(column(3, verbatimTextOutput("value"))),
       
       
       #checkboxInput("simulate", "Show simulation", value = TRUE), #show at different time steps
@@ -62,7 +73,7 @@ ui <- fluidPage(
         #tabPanel("Matrix", tableOutput("defPlot")) #assuming matrix form
         tabPanel("Plot", leafletOutput("map")),
         tabPanel("Summary Statistics", tableOutput("summary")), #uiOutput("summary")),
-        tabPanel("Binary Matrix",verbatimTextOutput("info")) #output matrix or df?
+        tabPanel("Binary Matrix...", tableOutput("binary")) #output matrix or df? #verbatimTextOutput("info")
       )
       
     ) #end mainPanel
@@ -74,6 +85,10 @@ ui <- fluidPage(
 
 server <- function(input, output){ #session arg?
   
+  #want to be able to store multiple user clicks (coords)
+  #draw lines onto UI
+  #user can select "redraw" or "submit"
+  #"submit" sends coords to server
   
   
   # create a reactive value that will store the click position
@@ -99,6 +114,19 @@ server <- function(input, output){ #session arg?
     points_df[-1,] #get rid of NA col
     #new_point
   })
+  
+  
+  
+  #points input works
+  output$binary <- renderTable({
+    #get user points and calculate
+    #eventually will extract from map clicks...
+    pt1 <- data.frame(lat=input$pt1.lat,long=input$pt1.long)
+    pt2 <- data.frame(lat=input$pt2.lat,long=input$pt2.long)
+    pts <- rbind(pt1,pt2)
+    pts
+  })
+  
   
   
   #output map!
