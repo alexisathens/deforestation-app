@@ -1,10 +1,12 @@
 #BART base
 rm(list=ls())
-source("deforestation-app/BART_aux.R")
+setwd("Documents/UF/Valle Lab/Amazon Simulation/amazon_simulation/deforestation-app")
+source("BART_aux.R")
 set.seed(1)
+library(invgamma)
 
 #generate fake data
-n=10
+n=10 #number of observations
 y=round(rnorm(n,mean=0,sd=2),2)
 x1=round(runif(n),2)
 x2=round(runif(n),2)
@@ -31,15 +33,23 @@ dec
 dat$term.id=classify(dat,dec)
 dat
 
-#gibbs
-ngibbs=1000
-mu1=mu2=mu3=1
-store.param=matrix(NA,ngibbs,3) #recover mu_1 mu_2 and mu_3
-param=list(mu1=mu1,mu2=mu2,mu3=mu3)
+#gibbs sampler
+ngibbs=10000
+mu=rep(1,8) #8 is number of terminal nodes b
+store.param=matrix(NA,ngibbs,8)
+param=list(mu,sigma=1)
+
+#initialize
+k<-2 #recommended param value
+m<-1 #200 #number of trees
+sigma.mu<-1/(2*k*sqrt(m))
 
 for(i in 1:ngibbs)
 {
-  param$mu1=samp.mu(param)
-  param$mu1=samp.mu(param)
-  param$mu1=samp.mu(param)
+  #param[[2]]=samp_sigma(param)
+  for(k in 1:8)
+  {
+    param[[1]][k]=samp_mu(param,dat,k)
+  }
+  store.param[i,]=param[[1]]
 }
