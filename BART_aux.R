@@ -27,9 +27,10 @@ assign_term <- function(dat,dec,this.id=1) #modify so works for any shape/size b
 samp_mu <- function(param,dat,k)
 {
   sigma=param[[2]]
-  L<-sum(dat$term.id==k) #number of observations in leaf
+  cond=dat$term.id==k
+  L<-sum(cond) #number of observations in leaf
   nu<-sqrt(1/(L/sigma+1/sigma.mu)) #sd of normal-normal conjugation
-  mean<-((nu/sigma)^2)*sum(dat[which(dat$term.id==k),"y"])
+  mean<-((nu/sigma)^2)*sum(dat[which(cond),"y"])
   return(rnorm(1,mean,nu))
 }
 
